@@ -5,6 +5,7 @@ import random
 import time
 
 Kickstarter_url = "https://www.kickstarter.com/projects/search.json?search=&term=%22Kris%20Cheng%22" #other ks project
+# Kickstarter_url = "https://www.kickstarter.com/projects/search.json?search=&term=%22Pizza%20Book%22" #other ks project
 # Kickstarter_url = "https://www.kickstarter.com/projects/search.json?search=&term=%22Wio%20Link%22" #wio link ks
 wio_link_led_url = "https://cn.iot.seeed.cc/v1/node/GroveLedWs2812/segment/0/"
 wio_link_key = "access_token=ce9356cb1840fad3e09c9fd2c7b9865b"
@@ -46,9 +47,10 @@ def prompt_everbody(count):
     servo_degree_end = wio_link_servo + "180"
     for i in range(count):
         requests.post(servo_degree_start + "?" + wio_link_key)
+        time.sleep(1)
         requests.post(servo_degree_end + "?" + wio_link_key)
         requests.post(wio_link_recorder)
-        time.sleep(1)
+        time.sleep(2)
 
 
 def ks_data_process(usd_pledged, backers_count):
@@ -58,10 +60,12 @@ def ks_data_process(usd_pledged, backers_count):
     backers_count = int(backers_count)
 
     if usd_pledged != USD_PLEDGED:
+        print "usd_pledged:  " + str(usd_pledged )
         update_display(usd_pledged)
         USD_PLEDGED = usd_pledged
 
     if backers_count > BACKERS_COUNT:
+        print "backers_count:" + str(backers_count)
         prompt_count = backers_count - BACKERS_COUNT
         if BACKERS_COUNT > 0:
             prompt_everbody(prompt_count)
@@ -79,8 +83,9 @@ def get_kickstarter():
     project = data_json.get('projects')[0]
     backers_count = project.get("backers_count")
     usd_pledged = project.get("usd_pledged")
-    print "backers_count:" + str(backers_count)
-    print "usd_pledged:  " + str(usd_pledged )
+
+    # print "usd_pledged:  " + str(usd_pledged )
+    # print "backers_count:" + str(backers_count)
 
     ks_data_process(usd_pledged, backers_count)
 
@@ -89,7 +94,7 @@ def main():
         get_kickstarter()
         time.sleep(5) #5s
     # update_display(40000)
-    # prompt_everbody(2)
+    # prompt_everbody(5)
 
 if __name__ == "__main__":
     main()
