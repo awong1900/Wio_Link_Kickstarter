@@ -49,6 +49,7 @@ def prompt_everbody(count):
         requests.post(servo_degree_start + "?" + wio_link_key)
         time.sleep(1)
         requests.post(servo_degree_end + "?" + wio_link_key)
+        time.sleep(1)
         requests.post(wio_link_recorder)
         time.sleep(2)
 
